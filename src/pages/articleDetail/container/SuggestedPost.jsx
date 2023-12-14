@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../articledetail.css";
 
 const SuggestedPost = ({ className, header, post = [], tags }) => {
    return (
-      <div className={`suggested-post${className}`}>
+      <div className={`suggested-post`}>
          <h2 className="suggested-header">{header}</h2>
          <div className="suggested-latest-post">
             {post.map((item, index) => (
@@ -19,8 +20,9 @@ const SuggestedPost = ({ className, header, post = [], tags }) => {
                </div>
             ))}
          </div>
-         <h2 className="suggested-tags">Tags</h2>
-         <div>
+
+         <div className="suggested-tags">
+            <h2>Tags:</h2>
             {tags.map((item, index) => (
                <Link to="/" className="suggested-tags-item" key={index}>
                   {item}

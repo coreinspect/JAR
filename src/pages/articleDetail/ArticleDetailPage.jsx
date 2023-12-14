@@ -40,6 +40,16 @@ const postData = [
       title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       createdAt: "2022-01-01",
    },
+   {
+      id: 4,
+      title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      createdAt: "2022-01-01",
+   },
+   {
+      id: 5,
+      title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      createdAt: "2022-01-01",
+   },
 ];
 
 const tagsData = ["Programming", "Development", "Testing"];
