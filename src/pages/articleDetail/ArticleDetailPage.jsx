@@ -65,12 +65,14 @@ const ArticleDetailPage = () => {
           <article className="article-detail">
             <BreadCrumbs data={breadCrumbsData} />
             {/* Generating the BreadCrumbs from the data */}
+            <div className="article-img-box">
+              <img
+                src={images.latestPost}
+                alt="Latest Post"
+                className="article-img"
+              />
+            </div>
 
-            <img
-              src={images.latestPost}
-              alt="Latest Post"
-              className="article-img"
-            />
             <Link
               to="/blog?category=SelectedCategory"
               className="article-category">
