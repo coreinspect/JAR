@@ -33,6 +33,12 @@
   font-weight: 600;
 }
 
+.article-img-box {
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+}
+
 .suggested-header {
   font-size: var(--p-font-1-4);
   font-weight: 500;
