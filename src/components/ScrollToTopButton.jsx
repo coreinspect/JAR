@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BiSolidChevronsUp } from 'react-icons/bi';
 
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -25,10 +26,8 @@ const ScrollToTopButton = () => {
   return (
     <>
       {isVisible && (
-        <button
-          onClick={scrollToTop}
-          style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
-          Scroll to top
+        <button onClick={scrollToTop} className="scroll-to-top">
+          <BiSolidChevronsUp />
         </button>
       )}
     </>

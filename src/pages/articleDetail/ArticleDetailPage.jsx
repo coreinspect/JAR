@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import { images } from '../../constants';
 
 import './articledetail.css';
-import ScrollToTopButton from '../../components/ScrollToTopButton';
 
 const breadCrumbsData = [
   {
@@ -135,7 +134,6 @@ const ArticleDetailPage = () => {
           <SidebarRight />
         </div>
       </div>
-      <ScrollToTopButton />
     </MainLayout>
   );
 };
