@@ -6,6 +6,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+# jar-development
+
+### `npm install`
+
+This command is used to install all the necessary dependencies required for the successful execution and development of the project.
+Running this ensures that all essential libraries, modules, and packages are installed, allowing for a seamless and efficient development environment.
+
 ### `npm start`
 
 Runs the app in the development mode.\
@@ -68,5 +75,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# jar-development
-# jar-development
