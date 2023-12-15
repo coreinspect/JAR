@@ -39,6 +39,12 @@
   overflow: hidden;
 }
 
+/* Comments Container */
+
+.comments-container {
+  margin-top: 20px;
+}
+
 .suggested-header {
   font-size: var(--p-font-1-4);
   font-weight: 500;
