@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { images } from '../../constants';
 
 import './articledetail.css';
+import CommentsContainer from '../../components/comments/CommentsContainer';
 
 const breadCrumbsData = [
   {
@@ -125,6 +126,7 @@ const ArticleDetailPage = () => {
               excepturi? Nemo assumenda obcaecati accusamus quaerat aliquid iure
               at fugiat?
             </p>
+            <CommentsContainer className="comments-container" />
           </article>
           <SuggestedPost
             header="Latest Article"
