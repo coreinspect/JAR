@@ -11,6 +11,9 @@
   grid-area: sidebar-left;
   width: 80%;
   justify-self: end;
+  top: 5%;
+  height: max-content;
+  position: sticky;
 }
 
 .article-sidebar-right {
@@ -113,9 +116,13 @@
   }
 
   .article-sidebar-left {
+    position: relative;
     grid-area: sidebar-left;
     width: 100%;
     justify-self: unset;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
   }
 
   .article-detail-page {
@@ -136,8 +143,15 @@
 
   .sidebarRight {
     margin-right: 0;
+    max-height: 100%;
   }
-  .navItems {
+
+  .article-sidebar-left .sidebarLeft {
+    padding: 1rem 0.5rem 0 0.5rem;
+    max-height: 100%;
+    box-shadow: none;
+  }
+  .article-sidebar-left .navItems {
     width: 50%;
     display: flex;
     justify-content: space-evenly;
@@ -148,13 +162,47 @@
     font-size: 1rem;
   }
 
-  .links ul li {
+  .article-sidebar-left .links ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: var(--p-font-0-8);
+  }
+
+  .article-sidebar-left .links ul li {
     text-align: center;
     font-size: 0.8rem;
   }
 
+  .article-sidebar-left .socmed {
+    width: 40%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .article-sidebar-left .desc {
+    display: none;
+  }
+
+  .article-sidebar-left .socmed ul {
+    padding: 0.3rem 0;
+  }
+
+  .article-sidebar-left .copyright h2 {
+    font-size: var(--p-font-1-5);
+  }
+
+  hr {
+    margin: 0;
+  }
+
   .suggested-latest-post {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .copy {
+    margin: 0;
   }
 }
 
@@ -224,7 +272,11 @@
     justify-content: space-evenly;
     margin: 0 auto;
   }
-
+  .article-sidebar-left .socmed {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
   .navItems li {
     font-size: 0.9rem;
   }
@@ -239,6 +291,12 @@
     grid-area: article;
     justify-self: center;
     width: 90%;
+  }
+
+  .article-sidebar-left .socmed ul {
+    width: 40%;
+    margin: 0 auto;
+    padding: 0;
   }
 
   .article-sidebar-right {

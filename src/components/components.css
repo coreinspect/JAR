@@ -188,12 +188,13 @@ nav {
 
 /* Sidebar Left CSS */
 .sidebarLeft {
+  position: relative;
   border: 1px solid transparent;
   border-radius: 10px;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.21);
   width: 100%;
   height: auto;
-  padding: 2rem 1.2rem;
+  padding: 2rem 1.2rem 0.2rem 1.2rem;
   font-family: 'Quicksand', sans-serif;
 }
 
@@ -235,7 +236,7 @@ hr {
 /* Social Media Icons */
 
 .socmed ul {
-  margin: 1rem 0;
+  padding: 1rem 0;
   position: relative;
   display: flex;
   justify-content: space-evenly;
@@ -274,7 +275,7 @@ hr {
 }
 
 .copy {
-  margin: 2rem 0 0 0 !important;
+  margin: 2rem 0 0 0;
   font-size: 12px;
 }
 

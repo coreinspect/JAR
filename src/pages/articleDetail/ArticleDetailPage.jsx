@@ -126,7 +126,10 @@ const ArticleDetailPage = () => {
               excepturi? Nemo assumenda obcaecati accusamus quaerat aliquid iure
               at fugiat?
             </p>
-            <CommentsContainer className="comments-container" />
+            <CommentsContainer
+              className="comments-container"
+              logginedUserId="a"
+            />
           </article>
           <SuggestedPost
             header="Latest Article"
