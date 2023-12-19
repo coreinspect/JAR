@@ -21,12 +21,13 @@ const CommentsContainer = ({ loggedinUserId }) => {
          setComments(commentData);
       })();
    }, []);
+   console.log(comments);
 
    //this is for the comment handler
    const addCommentHandler = (value, parent = null, replyOnUser = null) => {
       //creating a variable newComment that stores the new comment
       const newComment = {
-         _id: "10",
+         _id: Math.random().toString(),
          user: {
             _id: "a",
             name: "Mohammad Rezaii",
@@ -35,13 +36,45 @@ const CommentsContainer = ({ loggedinUserId }) => {
          post: "1",
          parent: parent,
          replyOnUser: replyOnUser,
-         createdAt: "2022-12-31T17:22:05.092+0000",
+         createdAt: new Date().toISOString(),
       };
 
       //adding comments to comments data
       setComments((curState) => {
          return [newComment, ...curState];
       });
+      setAffectedComment(null);
+   };
+
+   const updateCommentHadler = (value, commentId) => {
+      setComments((curState) => {
+         return curState.map((comment) => {
+            if (comment._id === commentId) {
+               return { ...comment, desc: value };
+            }
+            return comment;
+         });
+      });
+      setAffectedComment(null);
+   };
+
+   // Delete comment
+   const deleteCommentHandler = (commentId) => {
+      setComments((curState) => {
+         return curState.filter((comment) => comment._id !== commentId);
+      });
+      setAffectedComment(null);
+   };
+
+   // A handler placing all the child comment of the parent comment
+   const getRepliesHandler = (commentId) => {
+      return comments
+         .filter((comment) => comment.parent === commentId)
+         .sort((a, b) => {
+            return (
+               new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+            );
+         });
    };
 
    return (
@@ -56,11 +89,15 @@ const CommentsContainer = ({ loggedinUserId }) => {
             {/* rendering the main comments/parents comments fromt the mainComments */}
             {mainComments.map((comment) => (
                <Comment
+                  key={comment._id}
                   comment={comment}
                   loggedinUserId={loggedinUserId}
                   affectedComment={affectedComment}
                   setAffectedComment={setAffectedComment}
                   addComment={addCommentHandler}
+                  updateComment={updateCommentHadler}
+                  deleteComment={deleteCommentHandler}
+                  replies={getRepliesHandler(comment._id)}
                />
             ))}
          </div>

@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import "./comment.css";
 
-const CommentForm = ({ btnLabel, formSubmitHandler }) => {
-   const [value, setValue] = useState("");
+const CommentForm = ({
+   btnLabel,
+   formSubmitHandler,
+   formCancelHandler = null,
+   initialText = "",
+}) => {
+   const [value, setValue] = useState(initialText);
    //Submit handler function
    const submitHandler = (e) => {
       e.preventDefault();
@@ -19,9 +24,19 @@ const CommentForm = ({ btnLabel, formSubmitHandler }) => {
                value={value}
                onChange={(e) => setValue(e.target.value)}
             />
-            <button type="submit" className="article-comment-form-btn">
-               {btnLabel}
-            </button>
+            <div className="comment-form-btn-wrapper">
+               {formCancelHandler && (
+                  <button
+                     onClick={formCancelHandler}
+                     className="comment-form-cancel"
+                  >
+                     Cancel
+                  </button>
+               )}
+               <button type="submit" className="article-comment-form-btn">
+                  {btnLabel}
+               </button>
+            </div>
          </div>
       </form>
    );
