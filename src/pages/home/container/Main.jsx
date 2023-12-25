@@ -1,8 +1,9 @@
 import React from 'react';
-import ArticleCard from '../../../components/ArticleCard';
+
 import SidebarLeft from '../../../components/SidebarLeft';
 import SidebarRight from '../../../components/SidebarRight';
 import './container.css';
+import Articles from './Articles';
 
 const Main = () => {
   return (
@@ -12,7 +13,7 @@ const Main = () => {
       </div>
 
       <div className="article-card">
-        <ArticleCard />
+        <Articles />
       </div>
 
       <div className="sidebar-right sticky">
