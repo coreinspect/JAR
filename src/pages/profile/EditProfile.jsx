@@ -1,22 +1,43 @@
 import React, { useEffect } from "react";
 import MainLayout from "../../components/MainLayout";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import { signup } from "../../services/index/users";
 import { useDispatch, useSelector } from "react-redux";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getUserProfile, updateProfile } from "../../services/index/users";
+import "./profile.css";
+import ProfilePicture from "../../components/ProfilePicture";
+import { toast } from "react-hot-toast";
 import { userActions } from "../../store/reducers/userReducers";
-import toast from "react-hot-toast";
-import "./register.css";
 
-const Register = () => {
+const EditProfile = () => {
+   //declaring into variable
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const userState = useSelector((state) => state.user);
-   //creating a mutation for registering a users
+
+   // fitching the user data from the database
+   const {
+      // data , isLoading , error is a property where
+      //assign to profileData, profileIsLoading, profileError in short rename the data , isLoading , error
+      data: profileData,
+      isLoading: profileIsLoading,
+      error: profileError,
+   } = useQuery({
+      //function run when the page is loaded
+      queryFn: () => {
+         return getUserProfile({ token: userState.userInfo.token });
+      },
+      queryKey: ["profile"],
+   });
+
+   // creating a mutation for updating the  users
    const { mutate, isLoading } = useMutation({
       mutationFn: ({ name, email, password }) => {
-         return signup({ name, email, password });
+         return updateProfile({
+            token: userState.userInfo.token,
+            userData: { name, email, password },
+         });
       },
 
       //after getting the data from the mutation this function run
@@ -24,7 +45,7 @@ const Register = () => {
          dispatch(userActions.setUserInfo(data));
          //saving the data in the local storage to better experience
          localStorage.setItem("account", JSON.stringify(data));
-         toast.success("Registration Successful");
+         toast.success("Profile Updated Successful");
          console.log(data);
       },
       onError: (error) => {
@@ -34,10 +55,9 @@ const Register = () => {
    });
 
    //useEffect Redirect the User to Login upon successfull registration
-
    useEffect(() => {
-      if (userState.userInfo) {
-         navigate(-1);
+      if (!userState.userInfo) {
+         navigate("/");
       }
    }, [navigate, userState.userInfo]);
 
@@ -45,13 +65,15 @@ const Register = () => {
       register,
       handleSubmit,
       formState: { errors, isValid },
-      watch,
    } = useForm({
       defaultValues: {
          name: "",
          email: "",
          password: "",
-         confirmPassword: "",
+      },
+      values: {
+         name: profileIsLoading ? "" : profileData?.name,
+         email: profileIsLoading ? "" : profileData?.email,
       },
       mode: "onChange",
    });
@@ -66,14 +88,11 @@ const Register = () => {
       });
    };
 
-   //monitor the input from the password input
-   const password = watch("password");
-
    return (
       <MainLayout>
          <section className="register">
             <div className="register-container">
-               <h1>Register</h1>
+               <ProfilePicture avatar={profileData?.avatar} />
                <form onSubmit={handleSubmit(submitHandler)}>
                   {/* For NAME */}
                   <div className="name">
@@ -133,22 +152,15 @@ const Register = () => {
 
                   {/* FOR PASSWORD */}
                   <div className="password">
-                     <label htmlFor="password">Password</label>
+                     <label htmlFor="password">
+                        Enter New Password <span>(Optional)</span>
+                     </label>
 
                      <input
                         type="password"
                         id="password"
-                        {...register("password", {
-                           minLength: {
-                              value: 6,
-                              message: "Password must be at least 6 characters",
-                           },
-                           required: {
-                              value: true,
-                              message: "Password is required",
-                           },
-                        })}
-                        placeholder="Enter your password"
+                        {...register("password")}
+                        placeholder="Enter your new password"
                         className={`${
                            errors.password ? "error-border" : "no-error"
                         }`}
@@ -158,54 +170,16 @@ const Register = () => {
                      )}
                   </div>
 
-                  {/* CONFIRM PASSWORD */}
-                  <div className="password">
-                     <label htmlFor="confirm-password">Confirm Password</label>
-
-                     <input
-                        type="password"
-                        id="confirmPassword"
-                        {...register("confirmPassword", {
-                           required: {
-                              value: true,
-                              message: "Confirm Password is required",
-                           },
-                           validate: (value) => {
-                              if (value !== password) {
-                                 return "Passwords do not match";
-                              }
-                           },
-                        })}
-                        placeholder="Confirm your password"
-                        className={`${
-                           errors.confirmPassword ? "error-border" : "no-error"
-                        }`}
-                     />
-                     {errors.confirmPassword?.message && (
-                        <p className="error-reg">
-                           {errors.confirmPassword.message}
-                        </p>
-                     )}
-                  </div>
-
                   {/* FOR SUBMIT BUTTON */}
                   <button
                      type="submit"
-                     disabled={!isValid || isLoading}
+                     disabled={!isValid || profileIsLoading}
                      className={`btn-register ${
                         isValid ? "enabled" : "disabled"
                      }`}
                   >
-                     Register
+                     Update Profile
                   </button>
-
-                  {/* FOR ALREADY HAVE AN ACCOUNT */}
-                  <p className="have-account">
-                     Already have an account?{" "}
-                     <Link to="/login" className="login-btn">
-                        Login
-                     </Link>
-                  </p>
                </form>
             </div>
          </section>
@@ -213,4 +187,4 @@ const Register = () => {
    );
 };
 
-export default Register;
+export default EditProfile;

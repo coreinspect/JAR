@@ -3,20 +3,20 @@ import MainLayout from "../../components/MainLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { signup } from "../../services/index/users";
+import { login } from "../../services/index/users";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../store/reducers/userReducers";
 import toast from "react-hot-toast";
-import "./register.css";
+import "./login.css";
 
-const Register = () => {
+const Login = () => {
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const userState = useSelector((state) => state.user);
-   //creating a mutation for registering a users
+   //creating a mutation to login a user
    const { mutate, isLoading } = useMutation({
-      mutationFn: ({ name, email, password }) => {
-         return signup({ name, email, password });
+      mutationFn: ({ email, password }) => {
+         return login({ email, password });
       },
 
       //after getting the data from the mutation this function run
@@ -24,16 +24,17 @@ const Register = () => {
          dispatch(userActions.setUserInfo(data));
          //saving the data in the local storage to better experience
          localStorage.setItem("account", JSON.stringify(data));
-         toast.success("Registration Successful");
+         toast.success("Login Successful");
          console.log(data);
       },
+      // trowing an error
       onError: (error) => {
          toast.error(error.message);
          console.log(error);
       },
    });
 
-   //useEffect Redirect the User to Login upon successfull registration
+   //useEffect Redirect the User to Home upon successfull login
 
    useEffect(() => {
       if (userState.userInfo) {
@@ -45,64 +46,29 @@ const Register = () => {
       register,
       handleSubmit,
       formState: { errors, isValid },
-      watch,
    } = useForm({
       defaultValues: {
-         name: "",
          email: "",
          password: "",
-         confirmPassword: "",
       },
       mode: "onChange",
    });
 
    //getting the data from the form
    const submitHandler = (data) => {
-      const { name, email, password } = data;
+      const { email, password } = data;
       mutate({
-         name,
          email,
          password,
       });
    };
 
-   //monitor the input from the password input
-   const password = watch("password");
-
    return (
       <MainLayout>
          <section className="register">
             <div className="register-container">
-               <h1>Register</h1>
+               <h1>Login</h1>
                <form onSubmit={handleSubmit(submitHandler)}>
-                  {/* For NAME */}
-                  <div className="name">
-                     <label htmlFor="name">Name</label>
-
-                     <input
-                        type="text"
-                        id="name"
-                        // creating validation for the NAME
-                        {...register("name", {
-                           minLength: {
-                              value: 3,
-                              message: "Name must be at least 3 characters",
-                           },
-                           required: {
-                              value: true,
-                              message: "Name is required",
-                           },
-                        })}
-                        placeholder="Enter your name"
-                        className={`${
-                           errors.name ? "error-border" : "no-error"
-                        }`}
-                     />
-                     {errors.name?.message && (
-                        <p className="error-reg">{errors.name.message}</p>
-                     )}
-                  </div>
-
                   {/* FOR EMAIL */}
                   <div className="email">
                      <label htmlFor="email">Email</label>
@@ -158,35 +124,10 @@ const Register = () => {
                      )}
                   </div>
 
-                  {/* CONFIRM PASSWORD */}
-                  <div className="password">
-                     <label htmlFor="confirm-password">Confirm Password</label>
-
-                     <input
-                        type="password"
-                        id="confirmPassword"
-                        {...register("confirmPassword", {
-                           required: {
-                              value: true,
-                              message: "Confirm Password is required",
-                           },
-                           validate: (value) => {
-                              if (value !== password) {
-                                 return "Passwords do not match";
-                              }
-                           },
-                        })}
-                        placeholder="Confirm your password"
-                        className={`${
-                           errors.confirmPassword ? "error-border" : "no-error"
-                        }`}
-                     />
-                     {errors.confirmPassword?.message && (
-                        <p className="error-reg">
-                           {errors.confirmPassword.message}
-                        </p>
-                     )}
-                  </div>
+                  {/* FOR FORGOT PASSWORD */}
+                  <Link to="/forgot-password" className="forgot">
+                     Forgot Password
+                  </Link>
 
                   {/* FOR SUBMIT BUTTON */}
                   <button
@@ -196,14 +137,14 @@ const Register = () => {
                         isValid ? "enabled" : "disabled"
                      }`}
                   >
-                     Register
+                     Login
                   </button>
 
                   {/* FOR ALREADY HAVE AN ACCOUNT */}
                   <p className="have-account">
-                     Already have an account?{" "}
-                     <Link to="/login" className="login-btn">
-                        Login
+                     Don't have an account?{" "}
+                     <Link to="/register" className="login-btn">
+                        Register
                      </Link>
                   </p>
                </form>
@@ -213,4 +154,4 @@ const Register = () => {
    );
 };
 
-export default Register;
+export default Login;
