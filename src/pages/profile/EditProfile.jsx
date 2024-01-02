@@ -22,7 +22,6 @@ const EditProfile = () => {
       //assign to profileData, profileIsLoading, profileError in short rename the data , isLoading , error
       data: profileData,
       isLoading: profileIsLoading,
-      error: profileError,
    } = useQuery({
       //function run when the page is loaded
       queryFn: () => {

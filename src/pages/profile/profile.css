@@ -1,4 +1,4 @@
-.register {
+.profiler {
    margin: 0 auto;
    margin-top: 2rem;
    width: 50%;
@@ -6,18 +6,18 @@
    height: auto;
 }
 
-.register-container {
+.profiler-container {
    width: 100%;
 }
 
-.register-container h1 {
+.profiler-container h1 {
    font-size: 2rem;
    text-align: center;
    font-weight: 600;
    text-transform: uppercase;
 }
 
-.register-container form div {
+.profiler-container form div {
    margin-bottom: 0.8rem;
 }
 
@@ -56,7 +56,7 @@
    color: var(--blue);
 }
 
-.btn-register {
+.btn-profiler {
    margin: 0.5rem 0;
    width: 100%;
    background: var(--blue);

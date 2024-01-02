@@ -48,7 +48,7 @@ const SidebarRight = () => {
                   5 PRO Tips for an Unbeatable GitHub README!
                </p>
 
-               <div className="infotext-profile post-profile">
+               <div className="infotext-profile post-profile-img">
                   <a href="/" className="comments">
                      20 Comments
                   </a>
@@ -65,7 +65,7 @@ const SidebarRight = () => {
                   5 PRO Tips for an Unbeatable GitHub README!
                </p>
 
-               <div className="infotext-profile post-profile">
+               <div className="infotext-profile post-profile-img">
                   <a href="/" className="comments">
                      20 Comments
                   </a>
@@ -82,7 +82,7 @@ const SidebarRight = () => {
                   5 PRO Tips for an Unbeatable GitHub README!
                </p>
 
-               <div className="infotext-profile post-profile">
+               <div className="infotext-profile post-profile-img">
                   <a href="/" className="comments">
                      20 Comments
                   </a>
@@ -99,7 +99,7 @@ const SidebarRight = () => {
                   5 PRO Tips for an Unbeatable GitHub README!
                </p>
 
-               <div className="infotext-profile post-profile">
+               <div className="infotext-profile post-profile-img">
                   <a href="/" className="comments">
                      20 Comments
                   </a>
@@ -115,7 +115,7 @@ const SidebarRight = () => {
                   5 PRO Tips for an Unbeatable GitHub README!
                </p>
 
-               <div className="infotext-profile post-profile">
+               <div className="infotext-profile post-profile-img">
                   <a href="/" className="comments">
                      20 Comments
                   </a>

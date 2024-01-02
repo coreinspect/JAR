@@ -42,6 +42,8 @@ const Profile = (props) => {
                />
                <p>{profileData?.name}</p>
                <p>{profileData?.email}</p>
+               <p>{profileData?.role}</p>
+               {/* <p>{new Date(profileData.createdAt).getDate()}</p> */}
             </div>
          ) : (
             <div>

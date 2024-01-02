@@ -8,16 +8,19 @@ import Login from "./pages/login/Login";
 import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
 
+import NewPost from "./pages/newpost/NewPost";
+
 function App() {
    return (
       <div>
          <Routes>
             <Route index path="/" element={<HomePage />} />
-            <Route path="/blog/:id" element={<ArticleDetailPage />} />
+            <Route path="/topics/:slug" element={<ArticleDetailPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/edit-profile" element={<EditProfile />} />
+            <Route path="/add-post" element={<NewPost />} />
          </Routes>
          <Toaster />
       </div>
