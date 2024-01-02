@@ -52,6 +52,7 @@
 
 .comment-date {
    font-size: var(--p-font-0-8);
+   margin-left: 0;
 }
 
 .comment-desc {
@@ -92,4 +93,9 @@
 
 .replies {
    margin-top: 10px;
+}
+
+.no-comments {
+   text-align: center;
+   font-weight: bold;
 }

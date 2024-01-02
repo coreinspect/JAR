@@ -65,8 +65,8 @@ const Login = () => {
 
    return (
       <MainLayout>
-         <section className="register">
-            <div className="register-container">
+         <section className="login-acct">
+            <div className="login-container">
                <h1>Login</h1>
                <form onSubmit={handleSubmit(submitHandler)}>
                   {/* FOR EMAIL */}
@@ -133,9 +133,7 @@ const Login = () => {
                   <button
                      type="submit"
                      disabled={!isValid || isLoading}
-                     className={`btn-register ${
-                        isValid ? "enabled" : "disabled"
-                     }`}
+                     className={`btn-login ${isValid ? "enabled" : "disabled"}`}
                   >
                      Login
                   </button>

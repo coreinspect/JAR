@@ -1,23 +1,25 @@
-.register {
+.login-acct {
    margin: 0 auto;
    margin-top: 2rem;
    width: 50%;
    font-family: "Poppins", sans-serif;
    height: auto;
+   display: flex;
+   justify-content: center;
 }
 
-.register-container {
-   width: 100%;
+.login-container {
+   width: 50%;
 }
 
-.register-container h1 {
+.login-container h1 {
    font-size: 2rem;
    text-align: center;
    font-weight: 600;
    text-transform: uppercase;
 }
 
-.register-container form div {
+.login-container form div {
    margin-bottom: 0.8rem;
 }
 
@@ -56,7 +58,7 @@
    color: var(--blue);
 }
 
-.btn-register {
+.btn-login {
    margin: 0.5rem 0;
    width: 100%;
    background: var(--blue);

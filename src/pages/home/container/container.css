@@ -76,6 +76,18 @@
 }
 
 /* Responsiveness of Hero Section */
+.container-article {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   margin: 0 auto;
+   padding: 0.5rem;
+   align-items: center;
+}
+
+.article-card {
+   width: 100%;
+}
 
 @media (max-width: 1680px) {
    .headerContent {
