@@ -2,6 +2,7 @@
    "name": "frontend",
    "version": "0.1.0",
    "private": true,
+   "homepage": "https://jarcommunitytest.onrender.com/",
    "dependencies": {
       "@reduxjs/toolkit": "^2.0.1",
       "@tanstack/react-query": "^5.14.6",
