@@ -9,6 +9,7 @@ import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
 
 import NewPost from "./pages/newpost/NewPost";
+import EditPost from "./pages/editpost/EditPost";
 
 function App() {
    return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/edit-profile" element={<EditProfile />} />
             <Route path="/add-post" element={<NewPost />} />
+            <Route path="/edit-post/:slug" element={<EditPost />} />
          </Routes>
          <Toaster />
       </div>
