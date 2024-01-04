@@ -4,7 +4,7 @@ import BreadCrumbs from "../../components/BreadCrumbs";
 import SuggestedPost from "./container/SuggestedPost";
 import SidebarLeft from "../../components/SidebarLeft";
 import SidebarRight from "../../components/SidebarRight";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { images, stables } from "../../constants";
 import Bold from "@tiptap/extension-bold";
 import Document from "@tiptap/extension-document";
@@ -17,10 +17,11 @@ import parse from "html-react-parser";
 import "./articledetail.css";
 import CommentsContainer from "../../components/comments/CommentsContainer";
 
-import { getSinglePost } from "../../services/index/posts";
+import { deletePost, getSinglePost } from "../../services/index/posts";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const postData = [
    {
@@ -57,7 +58,7 @@ const ArticleDetailPage = () => {
    const [breadCrumbsData, setBreadCrumbsData] = useState([]);
    const [body, setBody] = useState([null]);
    const userState = useSelector((state) => state.user);
-
+   const navigate = useNavigate();
    const { data } = useQuery({
       queryKey: ["getSinglePost", slug],
       queryFn: () => getSinglePost({ slug }),
@@ -94,6 +95,35 @@ const ArticleDetailPage = () => {
       }
    }, [data]);
    console.log(data);
+
+   const handleDeletePost = async () => {
+      try {
+         // Call the deletePost function to delete the post
+         const result = await deletePost({
+            token: userState.userInfo.token,
+            slug,
+         });
+         console.log(result); // Log the result or handle success accordingly
+         // Check if the deletion was successful
+         if (result) {
+            // Display success toast
+            toast.success("Post Deleted Successfully");
+
+            // Redirect to the homepage
+            navigate("/");
+         } else {
+            // Handle deletion failure (optional)
+            // You can display an error toast or handle it in other ways
+            toast.error("Failed to delete post");
+         }
+
+         // Redirect or perform other actions after successful deletion
+      } catch (error) {
+         console.error(error.message);
+         // Handle errors, display error message, etc.
+      }
+   };
+
    return (
       <MainLayout>
          <div className="article">
@@ -134,6 +164,24 @@ const ArticleDetailPage = () => {
 
                         <h1 className="article-title">{data?.title}</h1>
                         <p className="article-post">{data?.caption}</p>
+
+                        {userState.userInfo &&
+                           data &&
+                           //The logged-in user is the author of the post
+                           (userState.userInfo._id === data.user._id ||
+                              //The logged-in user has the role of 'admin'.
+                              userState.userInfo.role === "admin" ||
+                              // The logged-in user has the role of 'moderator'.
+                              userState.userInfo.role === "moderator") && (
+                              <div className="article-option-btn">
+                                 <Link to={`/edit-post/${data.slug}`}>
+                                    <button>Edit Post</button>
+                                 </Link>
+                                 <button onClick={handleDeletePost}>
+                                    Delete Post
+                                 </button>
+                              </div>
+                           )}
                      </>
                   )}
 

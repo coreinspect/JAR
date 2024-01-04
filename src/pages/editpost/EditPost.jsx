@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Header from "../../components/Header";
-import { createPost } from "../../services/index/posts";
-import "./newpost.css";
+import { updatePost } from "../../services/index/posts";
+
 import "../home/container/container.css";
 import SidebarLeft from "../../components/SidebarLeft";
 import SidebarRight from "../../components/SidebarRight";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const NewPost = () => {
+const EditPost = () => {
+   const { slug } = useParams();
    const userState = useSelector((state) => state.user);
    const queryClient = useQueryClient();
    const navigate = useNavigate();
@@ -19,19 +20,19 @@ const NewPost = () => {
    const [photo, setPhoto] = useState(null);
    const [imagePreview, setImagePreview] = useState(null);
 
-   const { isLoading: isLoadingCreatePost } = useMutation({
-      mutationFn: async ({ token, title, caption, photo }) => {
+   const { isLoading: isLoadingEditPost } = useMutation({
+      mutationFn: async ({ token, slug, title, caption, photo }) => {
          const formData = new FormData();
          formData.append("photo", photo);
          formData.append("title", title);
          formData.append("caption", caption);
 
-         const response = await createPost({ token, formData });
+         const response = await updatePost({ token, slug, formData });
          return response;
       },
       onSuccess: (data) => {
          queryClient.invalidateQueries(["posts"]);
-         toast.success("New Post Created Successfully");
+         toast.success("Post Updated Successfully");
          setPhoto(null);
          setImagePreview(null);
       },
@@ -40,10 +41,37 @@ const NewPost = () => {
       },
    });
 
-   const handleAddNewPost = async () => {
+   useEffect(() => {
+      const fetchPost = async () => {
+         try {
+            console.log("Token in component:", userState.userInfo?.token);
+            console.log("Slug:", slug);
+
+            // Fetch post using updatePost
+            const { data } = await updatePost({
+               token: userState.userInfo?.token,
+               slug,
+            });
+            console.log("Title:", data.title);
+
+            setTitle(data.title);
+            setCaption(data.caption);
+            // Set other fields as needed
+         } catch (error) {
+            console.log("Error fetching post:", error);
+         }
+      };
+
+      // Call fetchPost if necessary conditions are met
+      if (slug && userState.userInfo?.token) {
+         fetchPost();
+      }
+   }, [slug, userState.userInfo]);
+
+   const handleEditPost = async () => {
       // Check if the user is logged in before proceeding
       if (!userState.userInfo) {
-         toast.error("You need to be logged in to create a post.");
+         toast.error("You need to be logged in to edit a post.");
          return;
       }
 
@@ -97,6 +125,7 @@ const NewPost = () => {
       };
       reader.readAsDataURL(file);
    };
+
    return (
       <div>
          <Header />
@@ -107,7 +136,7 @@ const NewPost = () => {
             <div className="newpost">
                {userState.userInfo ? (
                   <>
-                     <h2 className="newpost-title">Create a New Post</h2>
+                     <h2 className="newpost-title">Edit Post</h2>
                      <div className="post-title">
                         <label htmlFor="title">Title:</label>
                         <input
@@ -150,17 +179,17 @@ const NewPost = () => {
                      </div>
                      <div className="post-btn-container">
                         <button
-                           disabled={isLoadingCreatePost}
-                           onClick={handleAddNewPost}
+                           disabled={isLoadingEditPost}
+                           onClick={handleEditPost}
                            className="post-btn"
                         >
-                           Add Post
+                           Save Changes
                         </button>
                      </div>
                   </>
                ) : (
                   <p>
-                     You need to be logged in to create a post.{" "}
+                     You need to be logged in to edit a post.{" "}
                      {/* You can customize this message */}
                      <a href="/login">Login</a>
                   </p>
@@ -174,4 +203,4 @@ const NewPost = () => {
    );
 };
 
-export default NewPost;
+export default EditPost;
