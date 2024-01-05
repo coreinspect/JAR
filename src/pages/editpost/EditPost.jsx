@@ -21,7 +21,9 @@ const EditPost = () => {
    useEffect(() => {
       const fetchPostDetails = async () => {
          try {
-            const response = await fetch(`/api/posts/${slug}`);
+            const response = await fetch(
+               `https://jarcommunity-api.onrender.com/api/posts/${slug}`
+            );
             if (!response.ok) {
                throw new Error("Failed to fetch post details");
             }

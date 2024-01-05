@@ -4,11 +4,14 @@ import axios from "axios";
 
 export const signup = async ({ name, email, password }) => {
    try {
-      const { data } = await axios.post("/api/users/register", {
-         name,
-         email,
-         password,
-      });
+      const { data } = await axios.post(
+         "https://jarcommunity-api.onrender.com/api/users/register",
+         {
+            name,
+            email,
+            password,
+         }
+      );
       return data;
    } catch (error) {
       if (error.response && error.response.data.message)
@@ -20,10 +23,13 @@ export const signup = async ({ name, email, password }) => {
 // Login
 export const login = async ({ email, password }) => {
    try {
-      const { data } = await axios.post("/api/users/login", {
-         email,
-         password,
-      });
+      const { data } = await axios.post(
+         "https://jarcommunity-api.onrender.com/api/users/login",
+         {
+            email,
+            password,
+         }
+      );
       return data;
    } catch (error) {
       if (error.response && error.response.data.message)
@@ -40,7 +46,10 @@ export const getUserProfile = async ({ token }) => {
             Authorization: `Bearer ${token}`,
          },
       };
-      const { data } = await axios.get("/api/users/profile", config);
+      const { data } = await axios.get(
+         "https://jarcommunity-api.onrender.com/api/users/profile",
+         config
+      );
       return data;
    } catch (error) {
       if (error.response && error.response.data.message)
@@ -58,7 +67,11 @@ export const updateProfile = async ({ token, userData }) => {
             Authorization: `Bearer ${token}`,
          },
       };
-      const { data } = await axios.put("/api/users/update", userData, config);
+      const { data } = await axios.put(
+         "https://jarcommunity-api.onrender.com/api/users/update",
+         userData,
+         config
+      );
       return data;
    } catch (error) {
       if (error.response && error.response.data.message)
@@ -76,7 +89,7 @@ export const updateProfilePicture = async ({ token, formData }) => {
          },
       };
       const { data } = await axios.put(
-         "/api/users/updatepicture",
+         "https://jarcommunity-api.onrender.com/api/users/updatepicture",
          formData,
          config
       );
