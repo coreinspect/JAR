@@ -1,96 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Header from "../../components/Header";
-import { updatePost } from "../../services/index/posts";
-
-import "../home/container/container.css";
 import SidebarLeft from "../../components/SidebarLeft";
 import SidebarRight from "../../components/SidebarRight";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditPost = () => {
    const { slug } = useParams();
+
    const userState = useSelector((state) => state.user);
    const queryClient = useQueryClient();
    const navigate = useNavigate();
    const [title, setTitle] = useState("");
    const [caption, setCaption] = useState("");
-   const [photo, setPhoto] = useState(null);
-   const [imagePreview, setImagePreview] = useState(null);
 
-   const { isLoading: isLoadingEditPost } = useMutation({
-      mutationFn: async ({ token, slug, title, caption, photo }) => {
-         const formData = new FormData();
-         formData.append("photo", photo);
-         formData.append("title", title);
-         formData.append("caption", caption);
-
-         const response = await updatePost({ token, slug, formData });
-         return response;
-      },
-      onSuccess: (data) => {
-         queryClient.invalidateQueries(["posts"]);
-         toast.success("Post Updated Successfully");
-         setPhoto(null);
-         setImagePreview(null);
-      },
-      onError: (error) => {
-         toast.error(error.message);
-      },
-   });
+   const [isLoadingUpdatePost, setIsLoadingUpdatePost] = useState(false);
 
    useEffect(() => {
-      const fetchPost = async () => {
+      const fetchPostDetails = async () => {
          try {
-            console.log("Token in component:", userState.userInfo?.token);
-            console.log("Slug:", slug);
+            const response = await fetch(`/api/posts/${slug}`);
+            if (!response.ok) {
+               throw new Error("Failed to fetch post details");
+            }
 
-            // Fetch post using updatePost
-            const { data } = await updatePost({
-               token: userState.userInfo?.token,
-               slug,
-            });
-            console.log("Title:", data.title);
-
+            const data = await response.json();
+            console.log("Fetched Post Data:", data); // Log the fetched data
             setTitle(data.title);
             setCaption(data.caption);
-            // Set other fields as needed
          } catch (error) {
-            console.log("Error fetching post:", error);
+            console.error(error);
+            toast.error("Failed to fetch post details");
          }
       };
 
-      // Call fetchPost if necessary conditions are met
-      if (slug && userState.userInfo?.token) {
-         fetchPost();
-      }
-   }, [slug, userState.userInfo]);
+      fetchPostDetails();
+   }, [slug]);
 
    const handleEditPost = async () => {
-      // Check if the user is logged in before proceeding
       if (!userState.userInfo) {
          toast.error("You need to be logged in to edit a post.");
          return;
       }
-
       const token = userState.userInfo.token;
 
-      // Check if title, caption, and photo are not empty
-      if (!title.trim() || !caption.trim() || !photo) {
-         toast.error("Title, caption, and photo are required.");
+      if (!title.trim() || !caption.trim()) {
+         toast.error("Title and caption are required.");
          return;
       }
-
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("caption", caption);
-      formData.append("photo", photo);
-
+      setIsLoadingUpdatePost(true);
       try {
-         const response = await fetch("/api/posts", {
-            method: "POST",
+         const formData = new FormData();
+         formData.append("title", title);
+         formData.append("caption", caption);
+         const response = await fetch(`/api/posts/${slug}`, {
+            method: "PUT",
             headers: {
                Authorization: `Bearer ${token}`,
             },
@@ -98,32 +64,21 @@ const EditPost = () => {
          });
 
          if (!response.ok) {
-            throw new Error("Failed to create post");
+            throw new Error("Failed to edit post");
          }
-
          const data = await response.json();
-         console.log(data);
+         console.log("Server Response:", data);
 
+         // Handle success, refresh data, navigate, etc.
          queryClient.invalidateQueries(["posts"]);
-         toast.success("New Post Created Successfully");
-         setPhoto(null);
-         setImagePreview(null);
-
-         navigate(`/topics/${data.slug}`);
+         toast.success("Post Edited Successfully");
+         // ... additional logic as needed
       } catch (error) {
+         console.error("Edit Post Error:", error);
          toast.error(error.message);
+      } finally {
+         setIsLoadingUpdatePost(false);
       }
-   };
-
-   const handleImagePreview = (e) => {
-      const file = e.target.files[0];
-      setPhoto(file);
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-         setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
    };
 
    return (
@@ -158,39 +113,19 @@ const EditPost = () => {
                         />
                      </div>
 
-                     <div className="post-photo">
-                        <label htmlFor="photo"></label>
-                        <input
-                           type="file"
-                           id="photo"
-                           accept="image/*"
-                           onChange={handleImagePreview}
-                           className="inputfile"
-                        />
-                     </div>
-                     <div className="photo-preview-container">
-                        {imagePreview && (
-                           <img
-                              src={imagePreview}
-                              alt="Preview"
-                              className="post-photo-preview"
-                           />
-                        )}
-                     </div>
                      <div className="post-btn-container">
                         <button
-                           disabled={isLoadingEditPost}
+                           disabled={isLoadingUpdatePost}
                            onClick={handleEditPost}
                            className="post-btn"
                         >
-                           Save Changes
+                           {isLoadingUpdatePost ? "Editing..." : "Edit Post"}
                         </button>
                      </div>
                   </>
                ) : (
                   <p>
                      You need to be logged in to edit a post.{" "}
-                     {/* You can customize this message */}
                      <a href="/login">Login</a>
                   </p>
                )}

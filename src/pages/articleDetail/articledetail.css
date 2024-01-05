@@ -115,6 +115,25 @@
    flex-wrap: wrap;
 }
 
+.article-option-btn {
+   margin-top: 1.3rem;
+}
+
+.delete-post,
+.edit-post {
+   cursor: pointer;
+   padding: 0.256rem 1.5rem;
+   background: var(--red-color);
+   color: var(--secondary-color);
+   font-weight: 600;
+   margin-left: 1rem;
+}
+
+.edit-post {
+   background: var(--blue);
+   margin-left: 0;
+}
+
 /* Responsiveness */
 
 @media (max-width: 1300px) {
