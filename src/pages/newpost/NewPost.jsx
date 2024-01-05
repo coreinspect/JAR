@@ -40,6 +40,53 @@ const NewPost = () => {
       },
    });
 
+   // const handleAddNewPost = async () => {
+   //    // Check if the user is logged in before proceeding
+   //    if (!userState.userInfo) {
+   //       toast.error("You need to be logged in to create a post.");
+   //       return;
+   //    }
+
+   //    const token = userState.userInfo.token;
+
+   //    // Check if title, caption, and photo are not empty
+   //    if (!title.trim() || !caption.trim() || !photo) {
+   //       toast.error("Title, caption, and photo are required.");
+   //       return;
+   //    }
+
+   //    const formData = new FormData();
+   //    formData.append("title", title);
+   //    formData.append("caption", caption);
+   //    formData.append("photo", photo);
+
+   //    try {
+   //       const response = await fetch("/api/posts", {
+   //          method: "POST",
+   //          headers: {
+   //             Authorization: `Bearer ${token}`,
+   //          },
+   //          body: formData,
+   //       });
+
+   //       if (!response.ok) {
+   //          throw new Error("Failed to create post");
+   //       }
+
+   //       const data = await response.json();
+   //       console.log(data);
+
+   //       queryClient.invalidateQueries(["posts"]);
+   //       toast.success("New Post Created Successfully");
+   //       setPhoto(null);
+   //       setImagePreview(null);
+
+   //       navigate(`/topics/${data.slug}`);
+   //    } catch (error) {
+   //       toast.error(error.message);
+   //    }
+   // };
+
    const handleAddNewPost = async () => {
       // Check if the user is logged in before proceeding
       if (!userState.userInfo) {
@@ -49,16 +96,20 @@ const NewPost = () => {
 
       const token = userState.userInfo.token;
 
-      // Check if title, caption, and photo are not empty
-      if (!title.trim() || !caption.trim() || !photo) {
-         toast.error("Title, caption, and photo are required.");
+      // Check if title and caption are not empty
+      if (!title.trim() || !caption.trim()) {
+         toast.error("Title and caption are required.");
          return;
       }
 
       const formData = new FormData();
       formData.append("title", title);
       formData.append("caption", caption);
-      formData.append("photo", photo);
+
+      // Check if photo is present and append it to the form data
+      if (photo) {
+         formData.append("photo", photo);
+      }
 
       try {
          const response = await fetch("/api/posts", {
