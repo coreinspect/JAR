@@ -175,9 +175,14 @@ const ArticleDetailPage = () => {
                               userState.userInfo.role === "moderator") && (
                               <div className="article-option-btn">
                                  <Link to={`/edit-post/${data.slug}`}>
-                                    <button>Edit Post</button>
+                                    <button className="edit-post">
+                                       Edit Post
+                                    </button>
                                  </Link>
-                                 <button onClick={handleDeletePost}>
+                                 <button
+                                    onClick={handleDeletePost}
+                                    className="delete-post"
+                                 >
                                     Delete Post
                                  </button>
                               </div>
