@@ -112,13 +112,16 @@ const NewPost = () => {
       }
 
       try {
-         const response = await fetch("/api/posts", {
-            method: "POST",
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-         });
+         const response = await fetch(
+            "https://jarcommunity-api.onrender.com/api/posts",
+            {
+               method: "POST",
+               headers: {
+                  Authorization: `Bearer ${token}`,
+               },
+               body: formData,
+            }
+         );
 
          if (!response.ok) {
             throw new Error("Failed to create post");
